@@ -1,9 +1,14 @@
-// Setup a Document and store in the bucket.
+// Get Document
+bucket.get(key, function (err, resRead) {});
+
+// Insert
 var key = "nodeDevguideExampleRetrieve";
 bucket.insert(key, {test:"Some Test Value"},function(err, res) {});
 
-// Get Document
-bucket.get(key, function (err, resRead) {});
+// Upsert
+
+// Replace
+
 
 // Query Document
 var N1qlQuery = couchbase.N1qlQuery;
