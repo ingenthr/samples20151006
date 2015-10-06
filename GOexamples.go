@@ -16,6 +16,5 @@
 // Query
 
 // Simple
-  myQuery := gocb.NewN1qlQuery("SELECT airportname, city, country FROM `travel-sample` " +
-    "WHERE type='airport' AND city='Reno' ")
+  myQuery := gocb.NewN1qlQuery("SELECT name FROM `travel-sample` AS Airline WHERE id = 5209")
   rows,err := bucket.ExecuteN1qlQuery(myQuery,nil)
