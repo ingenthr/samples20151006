@@ -1,24 +1,62 @@
 // Read
 
 // Get (sync)
-JsonDocument found = bucket.get("notexisting").toBlocking().singleOrDefault(null); // sync
+JsonDocument myAirline = bucket.get("airline_5209");
 
 // Get (async)
-Observable loadedFromId = bucket.get("id"); // async using RxJava
+Observable<JsonDocument> myAirline = bucket.async().get("airline_5209"); // async using RxJava Observables!
 
 // Write
-// Insert (sync)
+
+// Insert (synchronous)
+JsonObject passenger = JsonObject.empty()
+.put("firstname", "Walter")
+.put("lastname", "White");
+JsonDocument stored = bucket.upsert(JsonDocument.create("walter", passenger));
+
 // Insert (async)
-// Upsert
+JsonObject passenger = JsonObject.empty()
+.put("firstname", "Walter")
+.put("lastname", "White");
+Observable<JsonDocument> stored = bucket.async().upsert(JsonDocument.create("walter", passenger));
+
+
+// Upsert (synchronous)
+JsonObject passenger = JsonObject.empty()
+.put("firstname", "Walter")
+.put("lastname", "White");
+JsonDocument stored = bucket.upsert(JsonDocument.create("walter", passenger));
+
+// Upsert (asynchronous)
+JsonObject passenger = JsonObject.empty()
+.put("firstname", "Walter")
+.put("lastname", "White");
+Observable<JsonDocument> stored = bucket.upsert(JsonDocument.create("walter", passenger));
+
+// Replace (synchronous)
+JsonObject passenger = JsonObject.empty()
+.put("firstname", "Walter")
+.put("lastname", "White");
+JsonDocument replaced = bucket.replace(JsonDocument.create("walter", passenger));
+
 // Replace (async)
-JsonDocument found = bucket.get("notexisting").toBlocking().singleOrDefault(null); //
+JsonObject passenger = JsonObject.empty()
+.put("firstname", "Walter")
+.put("lastname", "White");
+Observable<JsonDocument> walter2 = bucket.async().replace(JsonDocument.create("walter", passenger));
 
-// Query (Simple)
-Statement fluentStatement =
-            Select.select("airportname", "city", "country")
-                .from(i("travel-sample"))
-                .where(x("type").eq(s("airport"))
-                                .and(x("city").eq(s("Reno")))
-                );
+// Query simple string
+Observable<AsyncN1qlQueryResult> theAirline = bucket
+                                            .query(N1qlQuery
+                                                .simple("SELECT name FROM `travel-sample` AS Airline WHERE id = 5209"));
 
-// Query (DSL)
+
+// Query fluent API
+Observable<AsyncN1qlQueryResult> theAirline = bucket
+                                            .async()
+                                            .query(N1qlQuery.simple(
+                                                select("name")
+                                                    .from("travel-sample")
+                                                    .as("Airline")
+                                                    .where(x("id")
+                                                    .eq(5209))));
